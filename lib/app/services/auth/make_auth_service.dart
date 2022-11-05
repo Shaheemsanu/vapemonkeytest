@@ -25,10 +25,3 @@ class MakeAuthService extends BaseService {
     return finalRes;
   }
 }
-
-
-git add .
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/Shaheemsanu/vapemonkeytest.git
-git push -u origin main
