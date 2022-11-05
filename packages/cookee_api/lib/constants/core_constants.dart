@@ -1,0 +1,10 @@
+//Tokkens Keys
+const WC_TOKKKEN_VALID_KEY = "tokenvalid";
+const WC_ACCESS_TOKKEN_KEY = "accesstoken";
+const WC_USER_ID_KEY = "userid";
+
+//Tokkens VALUES
+const WC_LOGIN_TOKKEN_VALID =
+    'Token gccBxZHhxmnTET2o7TOLHalKTkMN34pcKrBfPXmhZqegnmf2mfLrRrSyKCtHpwFYbQxEj3As4osbjz8jKqqVlktRqK9256yFajHKTbmtkOxJIhqv72TGhQGBP3MkSW7DIn2bRCdT3IkhehgEzZXQIdfHJVE5foTI2zJKWg2g3ht0UHnZxZJ6MOrWK4KTHSfMKccnUusu1W2wZKiKsV5COMGSwLfMHFm3D7GwyaNQrxv9sroxg5sd4PbqfBe8yTU';
+const WC_PROFILE_TOKKEN_VALID =
+    'Token I7K6JdJjJ7GW5ZvIt79s1jjzKr5DXhBfHWYAMS6mOuW1ub75biKbdepWsqDrqZ2QEevlnYVdjXV6qRo2zVOTunF4XPlL8u5l0YUFdGXmtN21B5KkUXLQgHpu1YskFTgblBOU3xgpJjJNa9FcbzsejML57osWy1SXLnaXLsaso1LoDuTltcMD2fo7G2icn8W9RLx4B26OhWi21s9W4yiVYYlslDvfyNNxFXfQm2vzd0ILMAvTCRhikajbKR049s2';
