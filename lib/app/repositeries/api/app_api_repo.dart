@@ -2,6 +2,7 @@ import 'package:cookee_api/constants/core_constants.dart';
 import 'package:cookee_api/constants/messages.dart';
 import 'package:cookee_api/repo/api_app_general_repo.dart';
 import 'package:cookee_api/repo/api_appprofile_repo.dart';
+import 'package:vape_monkey2/app/models/api_models/api_get_homedata_model.dart';
 import 'package:vape_monkey2/app/models/api_models/api_user_register_model.dart';
 import 'package:vape_monkey2/screens/register_screen/register_screen_vm.dart';
 
@@ -50,5 +51,14 @@ class AppApiRepo extends BaseRepo {
       WC_ACCESS_TOKKEN_KEY: mainModel!.userTokken,
       WC_USER_ID_KEY: mainModel!.userId,
     };
+  }
+
+
+   Future<ApiGetHomeDataModel> getHomedata() async {
+    try {
+      return ApiGetHomeDataModel.fromJson(
+          await apiProfileRepo.getProfileExecute(wcGetHomeUrl,getProfileHeader()));
+    } catch (_) {}
+    return ApiGetHomeDataModel.fromJson(_resErrorBody);
   }
 }
