@@ -6,9 +6,14 @@ import '../Values/size_utils.dart';
 
 class FooterButton extends StatelessWidget {
   final String label;
+  final Color buttonColor;
   final Function() onPressed;
-  const FooterButton({Key? key, required this.label, required this.onPressed})
-      : super(key: key);
+  const FooterButton({
+    Key? key,
+    required this.label,
+    required this.onPressed,
+    this.buttonColor = AppColors.primaryColor,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

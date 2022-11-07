@@ -6,6 +6,7 @@ import '../../screens/home_screen/home_screen.dart';
 import '../../screens/login_screen/login_screen.dart';
 import '../../screens/profile_screen/profile_screen.dart';
 import '../../screens/register_screen/register_screen.dart';
+import '../../screens/spin_wheel/spin_wheel.dart';
 import '../../screens/splash_screen/splash_screen.dart';
 import '../../screens/web_view/web_view.dart';
 
@@ -55,6 +56,11 @@ class CommonNavigate {
   navigateWebScreen() {
     Navigator.push(parentContext,
         MaterialPageRoute(builder: (context) => const WebViewScreen()));
+  }
+
+  navigateSpinwheel() {
+    Navigator.push(parentContext,
+        MaterialPageRoute(builder: (context) => const SpinWheelScreen()));
   }
 
   navigateServerError() {

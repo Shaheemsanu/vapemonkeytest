@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:vape_monkey2/screens/home_screen/home_screen_vm.dart';
 
 import '../../utility/common/common_navigate.dart';
 import '../../utility/values/app_colors.dart';
@@ -18,24 +20,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  HomeScreenVm viewModel = HomeScreenVm();
   int index = 0;
-  List<String> images = [
-    "listitem1",
-    "novo",
-    "novo4",
-    "listitem1",
-    "novo",
-    "novo4"
-  ];
-  List<String> brand = ["juul", "smok", "eleaf", "juul", "smok", "eleaf"];
-  List<String> items = [
-    "Tripod PCC Kit by Uwell",
-    "Smok Novo 4 25W Pod Kit",
-    "Smok Novo 4 25W Pod Kit",
-    "Tripod PCC Kit by Uwell",
-    "Smok Novo 4 25W Pod Kit",
-    "Smok Novo 4 25W Pod Kit"
-  ];
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -55,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SliverPersistentHeader(
                   floating: true,
                   delegate: SliverAppBarDelegate(
-                      maxHeight: SizeUtils.getHeight(160),
+                      maxHeight: SizeUtils.getHeight(225),
                       minHeight: 0,
                       child: slidingOffer()),
                 ),
@@ -95,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
               CommonNavigate(parentContext: context).navigateProfileScreen();
             },
             child: Text(
-              "Jane Cooper",
+              viewModel.username,
               style: FontUtils.getfont18Style(
                   color: AppColors.black, fontWeight: FontWeight.w600),
             ),
@@ -109,7 +96,12 @@ class _HomeScreenState extends State<HomeScreen> {
               height: SizeUtils.getHeight(25),
               width: SizeUtils.getWidth(25),
               decoration: const BoxDecoration(shape: BoxShape.circle),
-              child: Image.asset(Utils.getAssetPng("profile")),
+              child: CachedNetworkImage(
+                fit: BoxFit.cover,
+                imageUrl: viewModel.customerBaseUrl + viewModel.customerImage,
+                placeholder: (context, url) => placeholder(),
+                errorWidget: (context, url, error) => placeholder(),
+              ),
             ),
           ),
         ],
@@ -120,86 +112,114 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget slidingOffer() {
     return Container(
         color: AppColors.secondaryColor,
-        height: SizeUtils.getHeight(150),
+        height: SizeUtils.getHeight(200),
         width: SizeUtils.getScreenWidth(),
-        child: CarouselSlider.builder(
-            itemCount: 4,
-            // carousel options
-            options: CarouselOptions(
-                enlargeCenterPage: true,
-                scrollDirection: Axis.horizontal,
-                autoPlayCurve: Curves.easeOut,
-                initialPage: 1,
-                autoPlay: true,
-                autoPlayInterval: const Duration(seconds: 4),
-                height: SizeUtils.getHeight(180),
-                viewportFraction: SizeUtils.getWidth(0.75)),
-            itemBuilder: (context, index, realIndex) {
-              return SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(
-                          left: SizeUtils.getWidth(10),
-                          top: SizeUtils.getHeight(20)),
-                      height: SizeUtils.getHeight(130),
-                      width: SizeUtils.getWidth(155),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                              width: SizeUtils.getWidth(1),
-                              color: AppColors.borderColor),
-                          top: BorderSide(
-                              width: SizeUtils.getWidth(1),
-                              color: AppColors.borderColor),
-                          left: BorderSide(
-                              width: SizeUtils.getWidth(1),
-                              color: AppColors.borderColor),
-                          right: BorderSide(
-                              width: SizeUtils.getWidth(1),
-                              color: AppColors.borderColor),
-                        ),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(SizeUtils.getRadius(8)),
-                            bottomLeft:
-                                Radius.circular(SizeUtils.getRadius(8))),
-                      ),
-                      child: offerText(),
-                    ),
-                    Container(
-                      clipBehavior: Clip.antiAlias,
-                      height: SizeUtils.getHeight(130),
-                      width: SizeUtils.getWidth(100),
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.secondaryColor,
-                              spreadRadius: SizeUtils.getRadius(20),
-                              blurRadius: SizeUtils.getRadius(0),
-                              offset: const Offset(
-                                  9, 6), // changes position of shadow
-                            ),
-                          ],
-                          borderRadius: BorderRadius.only(
-                              bottomRight:
-                                  Radius.circular(SizeUtils.getRadius(8)),
-                              topRight: Radius.circular(SizeUtils.getRadius(8)),
-                              topLeft:
-                                  Radius.circular(SizeUtils.getRadius(35)))),
-                      child: Image.asset(
-                        Utils.getAssetPng("offerimage"),
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  ],
+        child: Stack(
+          clipBehavior: Clip.antiAlias,
+          children: [
+            Positioned(
+              top: SizeUtils.getHeight(110),
+              child: SizedBox(
+                width: SizeUtils.getScreenWidth(),
+                child: InkWell(
+                  child: Image.asset(
+                    Utils.getAssetPng('spinner'),
+                    fit: BoxFit.fill,
+                    width: SizeUtils.getScreenWidth(),
+                    height: SizeUtils.getHeight(100),
+                  ),
+                  onTap: () {
+                    CommonNavigate(parentContext: context).navigateSpinwheel();
+                  },
                 ),
-              );
-            }));
+              ),
+            ),
+            CarouselSlider.builder(
+                itemCount: viewModel.offerBanners.length,
+                // carousel options
+                options: CarouselOptions(
+                    enlargeCenterPage: true,
+                    scrollDirection: Axis.horizontal,
+                    autoPlayCurve: Curves.easeOut,
+                    initialPage: 1,
+                    autoPlay: true,
+                    autoPlayInterval: const Duration(seconds: 4),
+                    height: SizeUtils.getHeight(180),
+                    viewportFraction: SizeUtils.getWidth(0.75)),
+                itemBuilder: (context, index, realIndex) {
+                  return SingleChildScrollView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(
+                              left: SizeUtils.getWidth(10),
+                              top: SizeUtils.getHeight(20)),
+                          height: SizeUtils.getHeight(130),
+                          width: SizeUtils.getWidth(155),
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            border: Border(
+                              bottom: BorderSide(
+                                  width: SizeUtils.getWidth(1),
+                                  color: AppColors.borderColor),
+                              top: BorderSide(
+                                  width: SizeUtils.getWidth(1),
+                                  color: AppColors.borderColor),
+                              left: BorderSide(
+                                  width: SizeUtils.getWidth(1),
+                                  color: AppColors.borderColor),
+                              right: BorderSide(
+                                  width: SizeUtils.getWidth(1),
+                                  color: AppColors.borderColor),
+                            ),
+                            borderRadius: BorderRadius.only(
+                                topLeft:
+                                    Radius.circular(SizeUtils.getRadius(8)),
+                                bottomLeft:
+                                    Radius.circular(SizeUtils.getRadius(8))),
+                          ),
+                          child: offerText(index),
+                        ),
+                        Container(
+                          clipBehavior: Clip.antiAlias,
+                          height: SizeUtils.getHeight(130),
+                          width: SizeUtils.getWidth(100),
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.transparent,
+                                  spreadRadius: SizeUtils.getRadius(20),
+                                  blurRadius: SizeUtils.getRadius(0),
+                                  offset: const Offset(
+                                      9, 6), // changes position of shadow
+                                ),
+                              ],
+                              borderRadius: BorderRadius.only(
+                                  bottomRight:
+                                      Radius.circular(SizeUtils.getRadius(8)),
+                                  topRight:
+                                      Radius.circular(SizeUtils.getRadius(8)),
+                                  topLeft: Radius.circular(
+                                      SizeUtils.getRadius(35)))),
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: viewModel.offerBannerBaseUrl +
+                                viewModel.offerBanners[index].image!,
+                            placeholder: (context, url) => placeholder(),
+                            errorWidget: (context, url, error) => placeholder(),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                }),
+          ],
+        ));
   }
 
-  Widget offerText() {
+  Widget offerText(int indexNo) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,15 +227,19 @@ class _HomeScreenState extends State<HomeScreen> {
         RichText(
           textAlign: TextAlign.left,
           text: TextSpan(
-            text: 'Great ',
+            text: viewModel.getFirstOfferBannerString(
+                viewModel.offerBanners[indexNo].name!),
             style: FontUtils.getfont18Style(
                 color: AppColors.black, fontWeight: FontWeight.w700),
             children: <TextSpan>[
               TextSpan(
-                  text: '20% OFF ',
+                  text: viewModel.getSecondOfferBannerString(
+                      viewModel.offerBanners[indexNo].name!),
                   style:
                       FontUtils.getfont18Style(color: AppColors.primaryColor)),
-              const TextSpan(text: "your first order"),
+              TextSpan(
+                  text: viewModel.getThirdOfferBannerString(
+                      viewModel.offerBanners[indexNo].name!)),
             ],
           ),
         ),
@@ -223,7 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
           height: SizeUtils.getHeight(10),
         ),
         Text(
-          "Smok Acro 25W Pod Kit",
+          viewModel.offerBanners[indexNo].description!,
           style: FontUtils.getfont10Style(
               color: AppColors.grey, fontWeight: FontWeight.w400),
         ),
@@ -231,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
           height: SizeUtils.getHeight(20),
         ),
         Text(
-          "*till 24 Nov 2021",
+          viewModel.offerBanners[indexNo].expiryDate!,
           style: FontUtils.getfont8Style(),
         )
       ],
@@ -246,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView.builder(
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
-            itemCount: 6,
+            itemCount: viewModel.coupens.length,
             primary: false,
             itemBuilder: (context, int index) {
               return Column(
@@ -276,8 +300,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   color: AppColors.secondaryColor,
                                   borderRadius: BorderRadius.circular(
                                       SizeUtils.getRadius(16))),
-                              child:
-                                  Image.asset(Utils.getAssetPng(images[index])),
+                              child: CachedNetworkImage(
+                                fit: BoxFit.cover,
+                                imageUrl: viewModel.coupenBaseUrl +
+                                    viewModel.coupens[index].image!,
+                                placeholder: (context, url) => placeholder(),
+                                errorWidget: (context, url, error) =>
+                                    placeholder(),
+                              ),
                             ),
                             SizedBox(
                               width: SizeUtils.getWidth(30),
@@ -286,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  items[index],
+                                  viewModel.coupens[index].name!,
                                   style: FontUtils.getfont14Style(
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w700),
@@ -294,11 +324,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                 SizedBox(
                                   height: SizeUtils.getHeight(5),
                                 ),
-                                Text(
-                                  "Get up to AED 100 Cashback",
-                                  style: FontUtils.getfont10Style(
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w600),
+                                SizedBox(
+                                  width: SizeUtils.getWidth(190),
+                                  child: Text(
+                                    viewModel.coupens[index].description!,
+                                    maxLines: 5,
+                                    style: FontUtils.getfont8Style(
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w600),
+                                  ),
                                 )
                               ],
                             )
@@ -318,13 +352,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                                height: SizeUtils.getHeight(16),
-                                width: SizeUtils.getWidth(52),
-                                child: Image.asset(
-                                    Utils.getAssetPng(brand[index]))),
+                              height: SizeUtils.getHeight(16),
+                              width: SizeUtils.getWidth(52),
+                              child: CachedNetworkImage(
+                                fit: BoxFit.cover,
+                                imageUrl: viewModel.coupenBaseUrl +
+                                    viewModel.coupens[index].brandLogo!,
+                                placeholder: (context, url) => placeholder(),
+                                errorWidget: (context, url, error) =>
+                                    placeholder(),
+                              ),
+                            ),
                             const Spacer(),
                             Text(
-                              "Expires on 14th Nov",
+                              viewModel.coupens[index].expiryDate!,
                               style: FontUtils.getfont10Style(
                                   color: AppColors.grey,
                                   fontWeight: FontWeight.w400),
@@ -391,6 +432,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget placeholder() {
+    return Image.network(
+        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png");
+  }
   // _launchURL() async {
   //   const url = "https://vape-dubai.com/product/blue-mint-by-dyb-plus/";
   //   if (await canLaunch(url)) {

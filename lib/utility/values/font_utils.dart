@@ -57,6 +57,16 @@ class FontUtils {
         fontFamily: "Circular Std");
   }
 
+  static TextStyle getfont24Style(
+      {Color color = AppColors.black,
+      FontWeight fontWeight = FontWeight.w700}) {
+    return TextStyle(
+        fontSize: SizeUtils.getFont(24),
+        fontWeight: fontWeight,
+        color: color,
+        fontFamily: "Circular Std");
+  }
+
   static TextStyle getfont26Style(
       {Color color = AppColors.black,
       FontWeight fontWeight = FontWeight.w500}) {
@@ -75,5 +85,25 @@ class FontUtils {
         fontWeight: fontWeight,
         color: color,
         fontFamily: "Circular Std");
+  }
+
+  static TextStyle getfont64Style(
+      {Color color = AppColors.black,
+      FontWeight fontWeight = FontWeight.w700}) {
+    return TextStyle(
+        fontSize: SizeUtils.getFont(64),
+        fontWeight: fontWeight,
+        color: color,
+        fontFamily: "Circular Std");
+  }
+
+  static TextStyle getHomeGlod64Style(
+      {Color color = AppColors.black,
+      FontWeight fontWeight = FontWeight.w400}) {
+    return TextStyle(
+        fontSize: SizeUtils.getFont(64),
+        fontWeight: fontWeight,
+        color: color,
+        fontFamily: "Home Gold");
   }
 }

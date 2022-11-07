@@ -6,21 +6,20 @@ import '../app/get_home_data_service.dart';
 
 class MakeAuthService extends BaseService {
   Future<ApiActionStatusMessageModel> auth(PmMakeAuthModel param) async {
-    print(
-        '........................................................MakeAuthService....auth===${param.username}      ${param.password}');
     ApiActionStatusMessageModel finalRes =
         ApiActionStatusMessageModel.loadInit();
     try {
       ApiMakeAuthModel apiRes = await appApiRepo.makeAuth(param.toJson());
 
-      print(
-          '........................................................MakeAuthService....apiRes.actionStatus=== ${apiRes.actionStatus}    apiRes.status==${apiRes.status}');
       finalRes = apiRes.loadActionStatus();
       if (apiRes.status!) {
-        await prefRepo.setUserId("");
+        await prefRepo.setUserId(apiRes.customerId!);
         await prefRepo.setUserTokken(apiRes.accessTokken!);
         mainModel!.userName = apiRes.customerName!;
         await GetHomeDataService().get();
+        finalRes = apiRes.loadActionStatus();
+        print(
+            '........................................................MakeAuthService....apiRes.actionStatus=== ${apiRes.actionStatus}    apiRes.status==${apiRes.status}');
       }
     } catch (_) {}
     return finalRes;

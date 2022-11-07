@@ -7,17 +7,19 @@ class GetHomeDataService extends BaseService {
     ApiGetHomeDataModel result = ApiGetHomeDataModel.initData();
     try {
       result = await appApiRepo.getHomedata();
-      setdata(result);
+      if (result.status! && result.actionStatus!) {
+        await setdata(result);
+      }
     } catch (e) {
       print('GetHomeDataService error = $e');
     }
     return result;
   }
 
-  void setdata(ApiGetHomeDataModel resultdata) {
+  Future<void> setdata(ApiGetHomeDataModel resultdata) async {
     appModel!.category = resultdata.category!;
     appModel!.categoryBaseUrl = resultdata.categoryBaseUrl!;
-    appModel!.coupens != resultdata.coupens!;
+    appModel!.coupens = resultdata.coupens!;
     appModel!.couponBaseUrl = resultdata.couponBaseUrl!;
     appModel!.customer = resultdata.customer!;
     appModel!.customerBaseUrl = resultdata.customerBaseUrl!;

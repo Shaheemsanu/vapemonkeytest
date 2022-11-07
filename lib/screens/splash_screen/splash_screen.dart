@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vape_monkey2/screens/splash_screen/splash_screen_vm.dart';
 import '../../utility/common/common_navigate.dart';
 import '../../utility/values/app_colors.dart';
 import '../../utility/values/size_utils.dart';
@@ -12,14 +13,16 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  SplashScreenVM viewModel = SplashScreenVM();
   @override
   void initState() {
     super.initState();
-    navigatetoLoginScreen();
+    viewModel.checkLogin();
   }
 
   @override
   Widget build(BuildContext context) {
+    viewModel.setContext(context);
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.primaryColor,
