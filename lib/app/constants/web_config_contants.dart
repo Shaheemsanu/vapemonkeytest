@@ -11,4 +11,4 @@ const wcForgotPasswordurl = "${wcBaseUrl}customer/forget_password";
 const wcResetPasswordUrl = "${wcBaseUrl}customer/reset_password";
 const wcInsertUserClickUrl = "${wcBaseUrl}customer/insert_customer_click";
 const wcInsertUserPromoUrl = "${wcBaseUrl}customer/insert_customer_promo";
-const wcUpdateProfileUrl = "${wcBaseUrl}customer/update_profile";
+const wcProfileUpdateUrl = "${wcBaseUrl}customer/update_profile";

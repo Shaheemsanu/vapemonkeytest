@@ -4,12 +4,12 @@ import 'package:cookee_api/repo/api_app_general_repo.dart';
 import 'package:cookee_api/repo/api_appprofile_repo.dart';
 import 'package:vape_monkey2/app/models/api_models/api_get_homedata_model.dart';
 import 'package:vape_monkey2/app/models/api_models/api_user_register_model.dart';
-import 'package:vape_monkey2/screens/register_screen/register_screen_vm.dart';
 
 import '../../../core/models/api_models/api_status_message.dart';
 import '../../constants/web_config_contants.dart';
 import '../../contracts/base_repo.dart';
 import '../../models/api_models/api_make_auth_model.dart';
+import '../../models/api_models/api_profile_update_model.dart';
 
 class AppApiRepo extends BaseRepo {
   ApiAppGeneralRepo apiGeneralRepo = ApiAppGeneralRepo();
@@ -36,7 +36,8 @@ class AppApiRepo extends BaseRepo {
     } catch (_) {}
     return ApiMakeAuthModel.fromJson(_resErrorBody);
   }
-   Future<ApiUserRegisterModel> registerUser(Map<String, dynamic> body) async {
+
+  Future<ApiUserRegisterModel> registerUser(Map<String, dynamic> body) async {
     try {
       print(
           '................................................... AppApiRepo .....  RegisterUser   body === $body   wcRegisterUrl === $wcRegisterUrl ');
@@ -53,12 +54,21 @@ class AppApiRepo extends BaseRepo {
     };
   }
 
-
-   Future<ApiGetHomeDataModel> getHomedata() async {
+  Future<ApiGetHomeDataModel> getHomedata() async {
     try {
-      return ApiGetHomeDataModel.fromJson(
-          await apiProfileRepo.getProfileExecute(wcGetHomeUrl,getProfileHeader()));
+      return ApiGetHomeDataModel.fromJson(await apiProfileRepo
+          .getProfileExecute(wcGetHomeUrl, getProfileHeader()));
     } catch (_) {}
     return ApiGetHomeDataModel.fromJson(_resErrorBody);
+  }
+
+  Future<ApiProfileUpdateModel> updateProfile(Map<String, dynamic> body) async {
+    try {
+      return ApiProfileUpdateModel.fromJson(await apiProfileRepo
+          .postProfileExecute(wcProfileUpdateUrl, body, getProfileHeader()));
+    } catch (e) {
+      print(e);
+    }
+    return ApiProfileUpdateModel.fromJson(_resErrorBody);
   }
 }

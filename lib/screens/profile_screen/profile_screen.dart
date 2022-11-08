@@ -1,6 +1,8 @@
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:vape_monkey2/screens/profile_screen/change_pasword_bottom_sheet.dart';
+import 'package:vape_monkey2/screens/profile_screen/profile_screem_vm.dart';
 import '../../utility/common/common_navigate.dart';
 import '../../utility/common/text_field_validation.dart';
 import '../../Utility/Components/custom_text_field.dart';
@@ -10,6 +12,7 @@ import '../../utility/values/font_utils.dart';
 import '../../utility/values/scroll_behaviour.dart';
 import '../../utility/values/size_utils.dart';
 import '../../utility/values/utils.dart';
+import 'image_selection_dialogbox.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -18,12 +21,12 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
-  final TextEditingController name = TextEditingController();
-  final TextEditingController email = TextEditingController();
+ProfileScreenVM viewModel = ProfileScreenVM();
 
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    viewModel.setContext(context);
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
@@ -54,10 +57,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(
                                   SizeUtils.getRadius(10))),
-                          child: Image.asset(
-                            Utils.getAssetPng("profile"),
+                          child: CachedNetworkImage(
                             fit: BoxFit.cover,
+                            imageUrl: viewModel.customerProfile,
+                            placeholder: (context, url) => placeholder(),
+                            errorWidget: (context, url, error) => placeholder(),
                           ),
+                          // const Text('data')
                         ),
                         SizedBox(
                           width: SizeUtils.getWidth(20),
@@ -67,7 +73,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           children: [
                             const Spacer(),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                ImageSelection.dialogBox(context: context);
+                              },
                               child: Row(
                                 children: [
                                   Icon(
@@ -90,7 +98,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             const Spacer(),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                ChangePasswordBottomSheet.bottomSheet(
+                                    context: context);
+                              },
                               child: Row(
                                 children: [
                                   Icon(
@@ -128,7 +139,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(
                     height: SizeUtils.getHeight(60),
                   ),
-                  FooterButton(label: "Save", onPressed: () {}),
+                  FooterButton(
+                      label: "Save",
+                      onPressed: () {
+                        viewModel.updateProfile(pContext: context);
+                        // GetHomeDataService().get();
+                        // setState(() {});
+                      }),
                   SizedBox(
                     height: SizeUtils.getHeight(50),
                   ),
@@ -150,18 +167,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
       label: "Name",
       keyboardType: TextInputType.name,
-      controller: name,
+      controller: viewModel.name,
     );
   }
 
   Widget eMail() {
     return CustomTextField(
+      isReadOnly: true,
       passwordField: false,
       validator: (value) {
         return TextFieldValidation.emailValidate(value);
       },
       label: "Email ID",
-      controller: email,
+      controller: viewModel.email,
       keyboardType: TextInputType.emailAddress,
     );
   }
@@ -217,5 +235,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  Widget placeholder() {
+    return Image.network(
+        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png");
   }
 }

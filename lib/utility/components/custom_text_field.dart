@@ -13,6 +13,7 @@ class CustomTextField extends StatefulWidget {
   final TextInputType? keyboardType;
   final Function? validator;
   final Function? onTap;
+  final bool isReadOnly;
 
   const CustomTextField(
       {Key? key,
@@ -23,6 +24,7 @@ class CustomTextField extends StatefulWidget {
       this.suffixIcon,
       this.keyboardType,
       this.onTap,
+      this.isReadOnly = false,
       this.validator})
       : super(key: key);
 
@@ -49,6 +51,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             height: SizeUtils.getHeight(10),
           ),
           TextFormField(
+            readOnly: widget.isReadOnly,
             onTap: () {
               if (widget.onTap != null) {
                 widget.onTap!();

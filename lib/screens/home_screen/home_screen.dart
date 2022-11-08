@@ -25,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    viewModel.setContext(context);
     return SafeArea(
       child: Scaffold(
           backgroundColor: AppColors.secondaryColor,
@@ -102,6 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 placeholder: (context, url) => placeholder(),
                 errorWidget: (context, url, error) => placeholder(),
               ),
+              // const Text('data')
             ),
           ),
         ],
