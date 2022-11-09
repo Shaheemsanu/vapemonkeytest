@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:vape_monkey2/Utility/Values/font_utils.dart';
-import 'package:vape_monkey2/screens/profile_screen/profile_screem_vm.dart';
 import '../../Utility/Common/text_field_validation.dart';
 import '../../Utility/Components/custom_text_field.dart';
 import '../../Utility/Components/footer_button.dart';
 import '../../Utility/Values/size_utils.dart';
 
 class ChangePasswordBottomSheet {
-  static bottomSheet({required BuildContext context}) {
-    final TextEditingController passwordController = TextEditingController();
-    final TextEditingController confirmpasswordController =
-        TextEditingController();
+  static bottomSheet(
+      {required BuildContext context,
+      required Function() onPressed,
+      required TextEditingController passwordController,
+      required TextEditingController confirmpasswordController}) {
     final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
     return showModalBottomSheet(
@@ -72,9 +72,10 @@ class ChangePasswordBottomSheet {
                       label: "Confirm",
                       onPressed: () {
                         if (formkey.currentState!.validate()) {
-                          ProfileScreenVM().updateProfile(
+                          onPressed();
+                          /*         ProfileScreenVM().updateProfile(
                               pContext: context,
-                              password: confirmpasswordController.text);
+                              password: confirmpasswordController.text); */
                           Navigator.pop(context);
                         }
                       })

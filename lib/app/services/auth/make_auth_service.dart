@@ -18,9 +18,7 @@ class MakeAuthService extends BaseService {
         mainModel!.userName = apiRes.customerName!;
         await GetHomeDataService().get();
         finalRes = apiRes.loadActionStatus();
-        print(
-            '........................................................MakeAuthService....apiRes.actionStatus=== ${apiRes.actionStatus}    apiRes.status==${apiRes.status}');
-      }
+         }
     } catch (_) {}
     return finalRes;
   }

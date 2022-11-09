@@ -1,5 +1,5 @@
+import 'package:vape_monkey2/screens/forgot_password/forgot_password_vm.dart';
 import 'package:vape_monkey2/utility/components/footer_button.dart';
-import '../../utility/Common/common_navigate.dart';
 import '../../utility/Common/text_field_validation.dart';
 import '../../utility/Values/app_colors.dart';
 import '../../utility/Values/font_utils.dart';
@@ -19,9 +19,11 @@ class ForgotPassword extends StatefulWidget {
 class _ForgotPasswordState extends State<ForgotPassword> {
   final TextEditingController email = TextEditingController();
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  ForgotPasswordVm viewModel = ForgotPasswordVm();
 
   @override
   Widget build(BuildContext context) {
+    viewModel.setContext(context);
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.secondaryColor,
@@ -74,17 +76,27 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     SizedBox(
                       height: SizeUtils.getHeight(190),
                     ),
-                    FooterButton(
-                        // FOOTERBUTTON
-                        label: "Next",
-                        onPressed:  () {
-                          if (_formkey.currentState!.validate()) {
-                            CommonNavigate(parentContext: context)
-                                .navigateResetPassword();
-                          }
+                    StreamBuilder<Object>(
+                        initialData: false,
+                        stream: viewModel.loaderStream,
+                        builder: (context, snapshot) {
+                          if (snapshot.data == true) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            return FooterButton(
+                                // FOOTERBUTTON
+                                label: "Next",
+                                onPressed: () {
+                                  if (_formkey.currentState!.validate()) {
+                                    viewModel.forgotPassword(email.text);
+                                  }
 
-                          // CommonNavigate(parentContext: context)
-                          //     .navigateResetPassword();
+                                  // CommonNavigate(parentContext: context)
+                                  //     .navigateResetPassword();
+                                });
+                          }
                         }),
                     // SizedBox(
                     //   height: SizeUtils.getHeight(20),
@@ -104,7 +116,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       },
       label: "Email ID",
       controller: email,
-      keyboardType: TextInputType.emailAddress, passwordField: true,
+      keyboardType: TextInputType.emailAddress,
+      passwordField: false,
     );
   }
 }

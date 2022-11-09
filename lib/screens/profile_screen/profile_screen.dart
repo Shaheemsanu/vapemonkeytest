@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:vape_monkey2/screens/profile_screen/change_pasword_bottom_sheet.dart';
+import 'package:vape_monkey2/screens/profile_screen/logout_dialog.dart';
 import 'package:vape_monkey2/screens/profile_screen/profile_screem_vm.dart';
 import '../../utility/common/common_navigate.dart';
 import '../../utility/common/text_field_validation.dart';
@@ -24,9 +26,25 @@ class ProfileScreen extends StatefulWidget {
 ProfileScreenVM viewModel = ProfileScreenVM();
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final TextEditingController name = TextEditingController();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmpasswordController =
+      TextEditingController();
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    name.dispose();
+    email.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     viewModel.setContext(context);
+    name.text = viewModel.customerName;
+    email.text = viewModel.email;
+
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
@@ -74,7 +92,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             const Spacer(),
                             InkWell(
                               onTap: () {
-                                ImageSelection.dialogBox(context: context);
+                                ImageSelection.dialogBox(
+                                  context: context,
+                                  onTapCamera: () {
+                                    viewModel.updateProfile(
+                                        imageSelectOPtion: ImageSource.camera);
+                                  },
+                                  onTapGallery: () {
+                                    viewModel.updateProfile(
+                                        imageSelectOPtion: ImageSource.gallery);
+                                  },
+                                );
                               },
                               child: Row(
                                 children: [
@@ -100,7 +128,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             InkWell(
                               onTap: () {
                                 ChangePasswordBottomSheet.bottomSheet(
-                                    context: context);
+                                  confirmpasswordController:
+                                      confirmpasswordController,
+                                  passwordController: passwordController,
+                                  context: context,
+                                  onPressed: () {
+                                    viewModel.updateProfile(
+                                        password:
+                                            confirmpasswordController.text);
+                                  },
+                                );
                               },
                               child: Row(
                                 children: [
@@ -142,7 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   FooterButton(
                       label: "Save",
                       onPressed: () {
-                        viewModel.updateProfile(pContext: context);
+                        viewModel.updateProfile(name: name.text);
                         // GetHomeDataService().get();
                         // setState(() {});
                       }),
@@ -167,7 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
       label: "Name",
       keyboardType: TextInputType.name,
-      controller: viewModel.name,
+      controller: name,
     );
   }
 
@@ -179,7 +216,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return TextFieldValidation.emailValidate(value);
       },
       label: "Email ID",
-      controller: viewModel.email,
+      controller: email,
       keyboardType: TextInputType.emailAddress,
     );
   }
@@ -227,9 +264,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: TextButton(
         style: TextButton.styleFrom(
             foregroundColor: AppColors.secondaryColor, elevation: 0),
-        onPressed: () {},
+        onPressed: () {
+          LogoutDialog(parentContext: context).show();
+        },
         child: Text(
-          "Log Out",
+          "LogOut",
           style: FontUtils.getfont18Style(
               color: AppColors.logOut, fontWeight: FontWeight.w300),
         ),

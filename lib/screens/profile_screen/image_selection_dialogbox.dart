@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:vape_monkey2/Utility/Values/app_colors.dart';
-import 'package:vape_monkey2/screens/profile_screen/profile_screem_vm.dart';
 import '../../Utility/Values/size_utils.dart';
 
 class ImageSelection {
-  static dialogBox({required BuildContext context}) {
+  static dialogBox(
+      {required BuildContext context,
+      required Function() onTapGallery,
+      required Function() onTapCamera}) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -30,8 +31,11 @@ class ImageSelection {
                           size: 50,
                         ),
                         onTap: () {
-                          ProfileScreenVM().updateProfile(pContext: context,
-                              imageSelectOPtion: ImageSource.gallery);
+                          onTapGallery();
+                          print('gallery');
+                          /*  ProfileScreenVM().updateProfile(
+                              pContext: context,
+                              imageSelectOPtion: ImageSource.gallery); */
                           Navigator.pop(context);
                         }),
                     InkWell(
@@ -41,8 +45,11 @@ class ImageSelection {
                           size: 50,
                         ),
                         onTap: () {
-                          ProfileScreenVM().updateProfile(pContext: context,
-                              imageSelectOPtion: ImageSource.camera);
+                          onTapCamera();
+                          print('camera');
+                          /*  ProfileScreenVM().updateProfile(
+                              pContext: context,
+                              imageSelectOPtion: ImageSource.camera); */
                           Navigator.pop(context);
                         }),
                   ],

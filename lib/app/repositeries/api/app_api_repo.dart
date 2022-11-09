@@ -2,6 +2,7 @@ import 'package:cookee_api/constants/core_constants.dart';
 import 'package:cookee_api/constants/messages.dart';
 import 'package:cookee_api/repo/api_app_general_repo.dart';
 import 'package:cookee_api/repo/api_appprofile_repo.dart';
+import 'package:vape_monkey2/app/models/api_models/api_forgot_password.dart';
 import 'package:vape_monkey2/app/models/api_models/api_get_homedata_model.dart';
 import 'package:vape_monkey2/app/models/api_models/api_user_register_model.dart';
 
@@ -10,6 +11,7 @@ import '../../constants/web_config_contants.dart';
 import '../../contracts/base_repo.dart';
 import '../../models/api_models/api_make_auth_model.dart';
 import '../../models/api_models/api_profile_update_model.dart';
+import '../../models/api_models/api_rest_password.dart';
 
 class AppApiRepo extends BaseRepo {
   ApiAppGeneralRepo apiGeneralRepo = ApiAppGeneralRepo();
@@ -29,8 +31,6 @@ class AppApiRepo extends BaseRepo {
 
   Future<ApiMakeAuthModel> makeAuth(Map<String, dynamic> body) async {
     try {
-      print(
-          '................................................... AppApiRepo .....  makeAuth   body === $body   wcLoginUrl === $wcLoginUrl ');
       return ApiMakeAuthModel.fromJson(
           await apiGeneralRepo.postProfileExecute(wcLoginUrl, body));
     } catch (_) {}
@@ -39,19 +39,10 @@ class AppApiRepo extends BaseRepo {
 
   Future<ApiUserRegisterModel> registerUser(Map<String, dynamic> body) async {
     try {
-      print(
-          '................................................... AppApiRepo .....  RegisterUser   body === $body   wcRegisterUrl === $wcRegisterUrl ');
       return ApiUserRegisterModel.fromJson(
           await apiGeneralRepo.postProfileExecute(wcRegisterUrl, body));
     } catch (_) {}
     return ApiUserRegisterModel.fromJson(_resErrorBody);
-  }
-
-  Map<String, String> getProfileHeader() {
-    return {
-      WC_ACCESS_TOKKEN_KEY: mainModel!.userTokken,
-      WC_USER_ID_KEY: mainModel!.userId,
-    };
   }
 
   Future<ApiGetHomeDataModel> getHomedata() async {
@@ -70,5 +61,44 @@ class AppApiRepo extends BaseRepo {
       print(e);
     }
     return ApiProfileUpdateModel.fromJson(_resErrorBody);
+  }
+
+  Future<ApiStatusMessageModel> logoutUser() async {
+    try {
+      return ApiStatusMessageModel.fromJson(await apiProfileRepo
+          .getProfileExecute(wcLogoutUrl, getProfileHeader()));
+    } catch (e) {
+      print(e);
+    }
+    return ApiStatusMessageModel.fromJson(_resErrorBody);
+  }
+
+  Future<ApiUserForgotPasswordModel> forgotPassword(
+      Map<String, dynamic> body) async {
+    try {
+      return ApiUserForgotPasswordModel.fromJson(await apiGeneralRepo
+          .postProfileJsonExecute(wcForgotPasswordurl, body));
+    } catch (e) {
+      print(e);
+    }
+    return ApiUserForgotPasswordModel.fromJson(_resErrorBody);
+  }
+
+  Future<ApiUserResetPasswordModel> restPassword(
+      Map<String, dynamic> body) async {
+    try {
+      return ApiUserResetPasswordModel.fromJson(await apiGeneralRepo
+          .postProfileJsonExecute(wcResetPasswordUrl, body));
+    } catch (e) {
+      print(e);
+    }
+    return ApiUserResetPasswordModel.fromJson(_resErrorBody);
+  }
+
+  Map<String, String> getProfileHeader() {
+    return {
+      WC_ACCESS_TOKKEN_KEY: mainModel!.userTokken,
+      WC_USER_ID_KEY: mainModel!.userId,
+    };
   }
 }

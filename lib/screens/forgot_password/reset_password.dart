@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../utility/common/common_navigate.dart';
+import 'package:vape_monkey2/screens/forgot_password/reset_password_vm.dart';
 import '../../utility/common/text_field_validation.dart';
 import '../../Utility/Components/custom_text_field.dart';
 import '../../utility/components/footer_button.dart';
@@ -11,10 +11,8 @@ import '../../utility/values/size_utils.dart';
 import '../../utility/values/utils.dart';
 
 class ResetPassword extends StatefulWidget {
-  final TextEditingController? controller;
-  final Function(String)? onCompleted;
-  const ResetPassword({Key? key, this.controller, this.onCompleted})
-      : super(key: key);
+  final String? userId;
+  const ResetPassword({Key? key, this.userId}) : super(key: key);
 
   @override
   _ResetPasswordState createState() => _ResetPasswordState();
@@ -24,9 +22,12 @@ class _ResetPasswordState extends State<ResetPassword> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmpasswordController =
       TextEditingController();
+  final TextEditingController _otpFieldController = TextEditingController();
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  ResetPasswordVm viewModel = ResetPasswordVm();
   @override
   Widget build(BuildContext context) {
+    viewModel.setContext(context);
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.secondaryColor,
@@ -80,7 +81,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: SizeUtils.getWidth(24)),
-                        child: const OtpField(),
+                        child: OtpField(controller: _otpFieldController),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
@@ -109,14 +110,26 @@ class _ResetPasswordState extends State<ResetPassword> {
                       SizedBox(
                         height: SizeUtils.getHeight(50),
                       ),
-                      FooterButton(
-                          // FOOTERBUTTON
-                          label: "Confirm",
-                          onPressed: () {
-                            if (_formkey.currentState!.validate()) {
-                              CommonNavigate(parentContext: context)
-                                  .navigateHomeScreen();
+                      StreamBuilder<bool>(
+                          initialData: false,
+                          stream: viewModel.loaderStream,
+                          builder: (context, snapshot) {
+                            if (snapshot.data!) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
                             }
+                            return FooterButton(
+                                // FOOTERBUTTON
+                                label: "Confirm",
+                                onPressed: () {
+                                  if (_formkey.currentState!.validate()) {
+                                    viewModel.resetPassword(
+                                        _otpFieldController.text,
+                                        _confirmpasswordController.text,
+                                        widget.userId!);
+                                  }
+                                });
                           }),
                       SizedBox(
                         height: SizeUtils.getHeight(20),

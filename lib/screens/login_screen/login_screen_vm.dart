@@ -21,8 +21,6 @@ class LoginScreenVM extends BaseViewModel {
   }
 
   makeLogin(String email, String password) async {
-    print(
-        '........................................................LoginScreenVM....makeLogin===$email      $password');
     String message = "Authentication failed ❗";
     if (!loading) {
       loading = true;
@@ -44,8 +42,6 @@ class LoginScreenVM extends BaseViewModel {
       }
       loading = false;
       _loaderSink.add(loading);
-      print(
-          '..................wwwwwwwwwwwreee.io..........................................');
     }
   }
 }

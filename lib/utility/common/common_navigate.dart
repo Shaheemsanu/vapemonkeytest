@@ -39,9 +39,13 @@ class CommonNavigate {
         MaterialPageRoute(builder: (context) => const ForgotPassword()));
   }
 
-  navigateResetPassword() {
-    Navigator.push(parentContext,
-        MaterialPageRoute(builder: (context) => const ResetPassword()));
+  navigateResetPassword(String userId) {
+    Navigator.push(
+        parentContext,
+        MaterialPageRoute(
+            builder: (context) => ResetPassword(
+                  userId: userId,
+                )));
   }
 
   navigateProfileScreen() {

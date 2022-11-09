@@ -3,7 +3,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vape_monkey2/app/contracts/base_view_model.dart';
 import 'package:vape_monkey2/app/models/api_models/api_profile_update_model.dart';
@@ -13,13 +12,13 @@ import 'package:vape_monkey2/utility/common/show_toast.dart';
 
 class ProfileScreenVM extends BaseViewModel {
   String customerName = '';
+  String email = '';
   String customerProfile = '';
   String customerBaseUrl = '';
-  final TextEditingController name = TextEditingController();
-  final TextEditingController email = TextEditingController();
+
   ProfileScreenVM() {
-    name.text = appModel!.customer!.name!;
-    email.text = appModel!.customer!.email!;
+    customerName = appModel!.customer!.name!;
+    email = appModel!.customer!.email!;
     customerProfile = appModel!.customerBaseUrl + appModel!.customer!.image!;
   }
 
@@ -27,33 +26,26 @@ class ProfileScreenVM extends BaseViewModel {
   void dispose() {}
 
   Future<void> updateProfile({
-    required BuildContext pContext,
     ImageSource? imageSelectOPtion,
     String? password = '',
+    String? name,
   }) async {
     String base64Image = await imageToBase64(imageSelectOPtion);
 
-    print(
-        '......................${name.text} \n..............$password \n........................$base64Image');
-
     PmProfileUpdateModel param = PmProfileUpdateModel(
-        image: base64Image, password: password, username: name.text);
+        image: base64Image, password: password, username: customerName);
     ApiProfileUpdateModel result = await ProfileUpdateService().update(param);
-    print(
-        '...........................result.status! == ${result.status!}    result.actionStatus! == ${result.actionStatus!} .\n ...${result.message}.');
     if (result.status! && result.actionStatus!) {
-      print(
-          '.......................profile vm status............${result.customer!.name!}....................');
       ShowToast(
               title: '',
               message: 'profile successfully updated',
-              parentContext: pContext)
+              parentContext: parentContext!)
           .show();
     } else {
       ShowToast(
               title: '',
               message: 'Faild to upload your profile',
-              parentContext: pContext)
+              parentContext: parentContext!)
           .show();
     }
   }
