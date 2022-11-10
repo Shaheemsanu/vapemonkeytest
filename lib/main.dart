@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_simple_dependency_injection/injector.dart';
-import 'package:vape_monkey2/screens/splash_screen/splash_screen.dart';
-import 'package:vape_monkey2/utility/values/app_theme.dart';
+import 'package:vape_monkeytest/screens/splash_screen/splash_screen.dart';
+import 'package:vape_monkeytest/utility/values/app_theme.dart';
 
 import 'app/config/app_module_container.dart';
 import 'core/config/module_container.dart';

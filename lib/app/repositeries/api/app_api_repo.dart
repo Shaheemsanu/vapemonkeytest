@@ -2,9 +2,9 @@ import 'package:cookee_api/constants/core_constants.dart';
 import 'package:cookee_api/constants/messages.dart';
 import 'package:cookee_api/repo/api_app_general_repo.dart';
 import 'package:cookee_api/repo/api_appprofile_repo.dart';
-import 'package:vape_monkey2/app/models/api_models/api_forgot_password.dart';
-import 'package:vape_monkey2/app/models/api_models/api_get_homedata_model.dart';
-import 'package:vape_monkey2/app/models/api_models/api_user_register_model.dart';
+import 'package:vape_monkeytest/app/models/api_models/api_forgot_password.dart';
+import 'package:vape_monkeytest/app/models/api_models/api_get_homedata_model.dart';
+import 'package:vape_monkeytest/app/models/api_models/api_user_register_model.dart';
 
 import '../../../core/models/api_models/api_status_message.dart';
 import '../../constants/web_config_contants.dart';

@@ -1,4 +1,4 @@
-import 'package:vape_monkey2/app/models/api_models/api_get_homedata_model.dart';
+import 'package:vape_monkeytest/app/models/api_models/api_get_homedata_model.dart';
 
 import '../../contracts/base_service.dart';
 

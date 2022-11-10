@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:vape_monkey2/Utility/Components/footer_button.dart';
-import 'package:vape_monkey2/Utility/Values/app_colors.dart';
-import 'package:vape_monkey2/Utility/Values/font_utils.dart';
-import 'package:vape_monkey2/Utility/Values/size_utils.dart';
-import 'package:vape_monkey2/Utility/Values/utils.dart';
-import 'package:vape_monkey2/app/models/models/promo_code_model.dart';
+import 'package:vape_monkeytest/Utility/Components/footer_button.dart';
+import 'package:vape_monkeytest/Utility/Values/app_colors.dart';
+import 'package:vape_monkeytest/Utility/Values/font_utils.dart';
+import 'package:vape_monkeytest/Utility/Values/size_utils.dart';
+import 'package:vape_monkeytest/Utility/Values/utils.dart';
+import 'package:vape_monkeytest/app/models/models/promo_code_model.dart';
 import '../web_view/web_view.dart';
 
 class ShowDialogBox {

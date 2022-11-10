@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:vape_monkey2/app/contracts/base_view_model.dart';
-import 'package:vape_monkey2/app/services/auth/logout_service.dart';
-import 'package:vape_monkey2/utility/common/common_navigate.dart';
-import 'package:vape_monkey2/utility/common/show_toast.dart';
+import 'package:vape_monkeytest/app/contracts/base_view_model.dart';
+import 'package:vape_monkeytest/app/services/auth/logout_service.dart';
+import 'package:vape_monkeytest/utility/common/common_navigate.dart';
+import 'package:vape_monkeytest/utility/common/show_toast.dart';
 
 import '../../core/models/api_models/api_status_message.dart';
 

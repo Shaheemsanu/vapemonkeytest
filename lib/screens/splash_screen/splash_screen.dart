@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vape_monkey2/screens/splash_screen/splash_screen_vm.dart';
+import 'package:vape_monkeytest/screens/splash_screen/splash_screen_vm.dart';
 import '../../utility/common/common_navigate.dart';
 import '../../utility/values/app_colors.dart';
 import '../../utility/values/size_utils.dart';

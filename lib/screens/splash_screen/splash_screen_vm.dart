@@ -1,4 +1,4 @@
-import 'package:vape_monkey2/app/contracts/base_view_model.dart';
+import 'package:vape_monkeytest/app/contracts/base_view_model.dart';
 
 import '../../Utility/Common/common_navigate.dart';
 import '../../app/services/auth/check_auth_service.dart';

@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:vape_monkey2/app/contracts/base_view_model.dart';
-import 'package:vape_monkey2/app/models/models/promo_code_model.dart';
-import 'package:vape_monkey2/screens/spin_wheel/spinwheel_dialog_box.dart';
+import 'package:vape_monkeytest/app/contracts/base_view_model.dart';
+import 'package:vape_monkeytest/app/models/models/promo_code_model.dart';
+import 'package:vape_monkeytest/screens/spin_wheel/spinwheel_dialog_box.dart';
 
 class SpinWheelScreenVm extends BaseViewModel {
   void getCoupon(int selectedNo) {

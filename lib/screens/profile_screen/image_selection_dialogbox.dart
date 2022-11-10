@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vape_monkey2/Utility/Values/app_colors.dart';
+import 'package:vape_monkeytest/Utility/Values/app_colors.dart';
 import '../../Utility/Values/size_utils.dart';
 
 class ImageSelection {

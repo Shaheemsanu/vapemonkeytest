@@ -1,4 +1,4 @@
-import 'package:vape_monkey2/app/models/models/customer_model.dart';
+import 'package:vape_monkeytest/app/models/models/customer_model.dart';
 
 import '../../models/models/category_model.dart';
 import '../../models/models/coupons_model.dart';

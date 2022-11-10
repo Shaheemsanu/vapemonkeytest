@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
-import 'package:vape_monkey2/app/contracts/base_view_model.dart';
-import 'package:vape_monkey2/app/models/api_models/api_profile_update_model.dart';
-import 'package:vape_monkey2/app/models/params_model/pm_profile_update.dart';
-import 'package:vape_monkey2/app/services/app/profile_update_service.dart';
-import 'package:vape_monkey2/utility/common/show_toast.dart';
+import 'package:vape_monkeytest/app/contracts/base_view_model.dart';
+import 'package:vape_monkeytest/app/models/api_models/api_profile_update_model.dart';
+import 'package:vape_monkeytest/app/models/params_model/pm_profile_update.dart';
+import 'package:vape_monkeytest/app/services/app/profile_update_service.dart';
+import 'package:vape_monkeytest/utility/common/show_toast.dart';
 import '../../app/services/app/get_home_data_service.dart';
 
 class ProfileScreenVM extends BaseViewModel {

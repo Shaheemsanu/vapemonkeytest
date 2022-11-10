@@ -1,5 +1,5 @@
-import 'package:vape_monkey2/app/contracts/base_view_model.dart';
-import 'package:vape_monkey2/app/services/app/get_home_data_service.dart';
+import 'package:vape_monkeytest/app/contracts/base_view_model.dart';
+import 'package:vape_monkeytest/app/services/app/get_home_data_service.dart';
 import '../../app/models/models/coupons_model.dart';
 import '../../app/models/models/offer_banner_model.dart';
 

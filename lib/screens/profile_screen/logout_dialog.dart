@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vape_monkey2/screens/profile_screen/logout_dialog_vm.dart';
+import 'package:vape_monkeytest/screens/profile_screen/logout_dialog_vm.dart';
 
 import '../../Utility/Components/footer_button.dart';
 import '../../Utility/Values/app_colors.dart';

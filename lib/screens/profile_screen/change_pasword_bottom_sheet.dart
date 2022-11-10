@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vape_monkey2/Utility/Values/font_utils.dart';
+import 'package:vape_monkeytest/Utility/Values/font_utils.dart';
 import '../../Utility/Common/text_field_validation.dart';
 import '../../Utility/Components/custom_text_field.dart';
 import '../../Utility/Components/footer_button.dart';

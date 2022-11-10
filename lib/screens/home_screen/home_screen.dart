@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:vape_monkey2/screens/home_screen/home_screen_vm.dart';
+import 'package:vape_monkeytest/screens/home_screen/home_screen_vm.dart';
 
 import '../../utility/common/common_navigate.dart';
 import '../../utility/values/app_colors.dart';

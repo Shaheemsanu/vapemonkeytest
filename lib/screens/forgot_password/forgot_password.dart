@@ -1,5 +1,5 @@
-import 'package:vape_monkey2/screens/forgot_password/forgot_password_vm.dart';
-import 'package:vape_monkey2/utility/components/footer_button.dart';
+import 'package:vape_monkeytest/screens/forgot_password/forgot_password_vm.dart';
+import 'package:vape_monkeytest/utility/components/footer_button.dart';
 import '../../utility/Common/text_field_validation.dart';
 import '../../utility/Values/app_colors.dart';
 import '../../utility/Values/font_utils.dart';

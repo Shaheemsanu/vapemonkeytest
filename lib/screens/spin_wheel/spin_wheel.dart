@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:vape_monkey2/screens/spin_wheel/spin_wheel_vm.dart';
+import 'package:vape_monkeytest/screens/spin_wheel/spin_wheel_vm.dart';
 import 'dart:async';
 import '../../Utility/Values/app_colors.dart';
 import '../../Utility/Values/font_utils.dart';

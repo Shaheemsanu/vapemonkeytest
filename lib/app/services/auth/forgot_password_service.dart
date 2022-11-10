@@ -1,4 +1,4 @@
-import 'package:vape_monkey2/app/contracts/base_service.dart';
+import 'package:vape_monkeytest/app/contracts/base_service.dart';
 
 import '../../models/api_models/api_forgot_password.dart';
 import '../../models/params_model/pm_user_forgot_password_model.dart';

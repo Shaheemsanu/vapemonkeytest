@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:vape_monkey2/app/contracts/base_view_model.dart';
-import 'package:vape_monkey2/app/services/auth/forgot_password_service.dart';
-import 'package:vape_monkey2/utility/common/common_navigate.dart';
+import 'package:vape_monkeytest/app/contracts/base_view_model.dart';
+import 'package:vape_monkeytest/app/services/auth/forgot_password_service.dart';
+import 'package:vape_monkeytest/utility/common/common_navigate.dart';
 import '../../Utility/Common/show_toast.dart';
 import '../../app/models/api_models/api_forgot_password.dart';
 import '../../app/models/params_model/pm_user_forgot_password_model.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:vape_monkey2/Utility/Common/common_navigate.dart';
-import 'package:vape_monkey2/Utility/Common/show_toast.dart';
-import 'package:vape_monkey2/Utility/Values/font_utils.dart';
+import 'package:vape_monkeytest/Utility/Common/common_navigate.dart';
+import 'package:vape_monkeytest/Utility/Common/show_toast.dart';
+import 'package:vape_monkeytest/Utility/Values/font_utils.dart';
 import '../../app/contracts/base_service.dart';
 import '../Components/custom_circular_loader.dart';
 import '../Components/footer_button.dart';
