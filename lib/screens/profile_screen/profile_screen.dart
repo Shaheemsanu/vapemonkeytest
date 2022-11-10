@@ -48,7 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Scaffold(
         body: RefreshIndicator(
           onRefresh: () async {
-            await viewModel.swipeRefresh();
+            await viewModel.refreshScreen();
             setState(() {});
           },
           child: SizedBox(
@@ -79,13 +79,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(
                                     SizeUtils.getRadius(10))),
-                            child: CachedNetworkImage(
-                              fit: BoxFit.cover,
-                              imageUrl: viewModel.customerProfile,
-                              placeholder: (context, url) => placeholder(),
-                              errorWidget: (context, url, error) =>
-                                  placeholder(),
-                            ),
+                            child: StreamBuilder<bool>(
+                                initialData: false,
+                                stream: viewModel.loaderStream,
+                                builder: (context, snapshot) {
+                                  if (snapshot.data!) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  } else {
+                                    return CachedNetworkImage(
+                                      fit: BoxFit.cover,
+                                      imageUrl: viewModel.customerProfile,
+                                      placeholder: (context, url) =>
+                                          placeholder(),
+                                      errorWidget: (context, url, error) =>
+                                          placeholder(),
+                                    );
+                                  }
+                                }),
                             // const Text('data')
                           ),
                           SizedBox(
@@ -99,15 +111,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 onTap: () {
                                   ImageSelection.dialogBox(
                                     context: context,
-                                    onTapCamera: () {
-                                      viewModel.updateProfileImage(
+                                    onTapCamera: () async {
+                                      await viewModel.updateProfileImage(
                                           imageSelectOPtion:
                                               ImageSource.camera);
+                                      await viewModel.refreshScreen();
+                                      setState(() {});
                                     },
-                                    onTapGallery: () {
-                                      viewModel.updateProfileImage(
+                                    onTapGallery: () async {
+                                      await viewModel.updateProfileImage(
                                           imageSelectOPtion:
                                               ImageSource.gallery);
+                                      await viewModel.refreshScreen();
+                                      setState(() {});
                                     },
                                   );
                                 },
@@ -194,9 +210,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           } else {
                             return FooterButton(
                                 label: "Save",
-                                onPressed: () {
-                                  viewModel.updateProfileName(name: name.text);
-                                  // setState(() {});
+                                onPressed: () async {
+                                  await viewModel.updateProfileName(
+                                      name: name.text);
                                 });
                           }
                         }),

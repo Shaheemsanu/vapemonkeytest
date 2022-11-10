@@ -76,7 +76,10 @@ class ChangePasswordBottomSheet {
                           /*         ProfileScreenVM().updateProfile(
                               pContext: context,
                               password: confirmpasswordController.text); */
+
                           Navigator.pop(context);
+                          passwordController.clear();
+                          confirmpasswordController.clear();
                         }
                       })
                 ],

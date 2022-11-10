@@ -27,15 +27,20 @@ class ProfileScreenVM extends BaseViewModel {
     customerName = appModel!.customer!.name!;
     email = appModel!.customer!.email!;
     customerProfile = appModel!.customerBaseUrl + appModel!.customer!.image!;
-    print('.................111......$customerProfile.........');
   }
 
   @override
   void dispose() {}
-  Future<void> swipeRefresh() async {
-    await GetHomeDataService().get();
-    ProfileScreenVM();
-    print('..................222.......$customerProfile.......');
+
+  Future<void> refreshScreen() async {
+    if (!isloading) {
+      isloading = true;
+      _loaderSink.add(isloading);
+      await GetHomeDataService().get();
+      ProfileScreenVM();
+      isloading = false;
+      _loaderSink.add(isloading);
+    }
   }
 
   Future<void> updateProfileName({
@@ -56,19 +61,31 @@ class ProfileScreenVM extends BaseViewModel {
   Future<void> updateProfilePassword({
     String? password = '',
   }) async {
-    param = PmProfileUpdateModel(password: password, image: '', username: '');
-    ApiProfileUpdateModel result = await ProfileUpdateService().update(param);
-    profileUpdateToast(result);
+    if (!isloading) {
+      isloading = true;
+      _loaderSink.add(isloading);
+      param = PmProfileUpdateModel(password: password, image: '', username: '');
+      ApiProfileUpdateModel result = await ProfileUpdateService().update(param);
+      profileUpdateToast(result);
+      isloading = false;
+      _loaderSink.add(isloading);
+    }
   }
 
   Future<void> updateProfileImage({
     ImageSource? imageSelectOPtion,
   }) async {
-    String base64Image = await imageConvertToBase64(imageSelectOPtion);
-    param =
-        PmProfileUpdateModel(image: base64Image, password: '', username: '');
-    ApiProfileUpdateModel result = await ProfileUpdateService().update(param);
-    profileUpdateToast(result);
+    if (!isloading) {
+      isloading = true;
+      _loaderSink.add(isloading);
+      String base64Image = await imageConvertToBase64(imageSelectOPtion);
+      param =
+          PmProfileUpdateModel(image: base64Image, password: '', username: '');
+      ApiProfileUpdateModel result = await ProfileUpdateService().update(param);
+      profileUpdateToast(result);
+      isloading = false;
+      _loaderSink.add(isloading);
+    }
   }
 
   Future<String> imageConvertToBase64(imageSelectOPtion) async {
