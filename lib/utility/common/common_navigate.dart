@@ -39,11 +39,12 @@ class CommonNavigate {
         MaterialPageRoute(builder: (context) => const ForgotPassword()));
   }
 
-  navigateResetPassword(String userId) {
+  navigateResetPassword(String userId, String email) {
     Navigator.push(
         parentContext,
         MaterialPageRoute(
             builder: (context) => ResetPassword(
+                  email: email,
                   userId: userId,
                 )));
   }
@@ -57,9 +58,13 @@ class CommonNavigate {
     Navigator.pop(parentContext);
   }
 
-  navigateWebScreen() {
-    Navigator.push(parentContext,
-        MaterialPageRoute(builder: (context) => const WebViewScreen()));
+  navigateWebScreen(String url) {
+    Navigator.push(
+        parentContext,
+        MaterialPageRoute(
+            builder: (context) => WebViewScreen(
+                  url: url,
+                )));
   }
 
   navigateSpinwheel() {

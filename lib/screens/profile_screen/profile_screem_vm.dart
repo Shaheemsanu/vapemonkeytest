@@ -1,40 +1,92 @@
-// ignore_for_file: non_constant_identifier_names
-
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:image_picker/image_picker.dart';
 import 'package:vape_monkey2/app/contracts/base_view_model.dart';
 import 'package:vape_monkey2/app/models/api_models/api_profile_update_model.dart';
 import 'package:vape_monkey2/app/models/params_model/pm_profile_update.dart';
 import 'package:vape_monkey2/app/services/app/profile_update_service.dart';
 import 'package:vape_monkey2/utility/common/show_toast.dart';
+import '../../app/services/app/get_home_data_service.dart';
 
 class ProfileScreenVM extends BaseViewModel {
   String customerName = '';
   String email = '';
   String customerProfile = '';
   String customerBaseUrl = '';
+  bool isloading = false;
+  final _loaderController = StreamController<bool>.broadcast();
+  StreamSink<bool> get _loaderSink => _loaderController.sink;
+  Stream<bool> get loaderStream => _loaderController.stream;
+  PmProfileUpdateModel param = PmProfileUpdateModel();
 
   ProfileScreenVM() {
+    setdata();
+  }
+  void setdata() {
     customerName = appModel!.customer!.name!;
     email = appModel!.customer!.email!;
     customerProfile = appModel!.customerBaseUrl + appModel!.customer!.image!;
+    print('.................111......$customerProfile.........');
   }
 
   @override
   void dispose() {}
+  Future<void> swipeRefresh() async {
+    await GetHomeDataService().get();
+    ProfileScreenVM();
+    print('..................222.......$customerProfile.......');
+  }
 
-  Future<void> updateProfile({
-    ImageSource? imageSelectOPtion,
-    String? password = '',
+  Future<void> updateProfileName({
     String? name,
   }) async {
-    String base64Image = await imageToBase64(imageSelectOPtion);
+    if (!isloading) {
+      isloading = true;
+      _loaderSink.add(isloading);
+      param =
+          PmProfileUpdateModel(username: customerName, image: '', password: '');
+      ApiProfileUpdateModel result = await ProfileUpdateService().update(param);
+      profileUpdateToast(result);
+      isloading = false;
+      _loaderSink.add(isloading);
+    }
+  }
 
-    PmProfileUpdateModel param = PmProfileUpdateModel(
-        image: base64Image, password: password, username: customerName);
+  Future<void> updateProfilePassword({
+    String? password = '',
+  }) async {
+    param = PmProfileUpdateModel(password: password, image: '', username: '');
     ApiProfileUpdateModel result = await ProfileUpdateService().update(param);
+    profileUpdateToast(result);
+  }
+
+  Future<void> updateProfileImage({
+    ImageSource? imageSelectOPtion,
+  }) async {
+    String base64Image = await imageConvertToBase64(imageSelectOPtion);
+    param =
+        PmProfileUpdateModel(image: base64Image, password: '', username: '');
+    ApiProfileUpdateModel result = await ProfileUpdateService().update(param);
+    profileUpdateToast(result);
+  }
+
+  Future<String> imageConvertToBase64(imageSelectOPtion) async {
+    final ImagePicker picker = ImagePicker();
+    String base64Code = '';
+    if (imageSelectOPtion != null) {
+      try {
+        XFile? photo = await picker.pickImage(source: imageSelectOPtion);
+        Uint8List imageByte = await photo!.readAsBytes();
+        base64Code = base64.encode(imageByte);
+      } catch (e) {
+        // print('........................................$e....');
+      }
+    }
+    return base64Code;
+  }
+
+  profileUpdateToast(ApiProfileUpdateModel result) {
     if (result.status! && result.actionStatus!) {
       ShowToast(
               title: '',
@@ -48,25 +100,5 @@ class ProfileScreenVM extends BaseViewModel {
               parentContext: parentContext!)
           .show();
     }
-  }
-
-  Future<String> imageToBase64(imageSelectOPtion) async {
-    final ImagePicker picker = ImagePicker();
-    String base64Code = '';
-    if (imageSelectOPtion != null) {
-      try {
-        XFile? photo = await picker.pickImage(source: imageSelectOPtion);
-        Uint8List imageByte = await photo!.readAsBytes();
-        base64Code = base64.encode(imageByte);
-      } catch (e) {
-        print('.....................setProfileImage...................$e....');
-      }
-    } else {
-      /*  ShowToast(
-          title: '',
-          message: 'Faild to upload your profile Image',
-          parentContext: parentContext!); */
-    }
-    return base64Code;
   }
 }

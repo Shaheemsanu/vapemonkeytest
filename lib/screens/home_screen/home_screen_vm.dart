@@ -1,4 +1,5 @@
 import 'package:vape_monkey2/app/contracts/base_view_model.dart';
+import 'package:vape_monkey2/app/services/app/get_home_data_service.dart';
 import '../../app/models/models/coupons_model.dart';
 import '../../app/models/models/offer_banner_model.dart';
 
@@ -21,6 +22,11 @@ class HomeScreenVm extends BaseViewModel {
   }
   @override
   void dispose() {}
+
+  Future<void> swipeRefresh() async {
+    await GetHomeDataService().get();
+    HomeScreenVm();
+  }
 
   String getFirstOfferBannerString(String firstString) {
     List words = firstString.split(' ');

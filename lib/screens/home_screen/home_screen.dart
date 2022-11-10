@@ -31,30 +31,36 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: AppColors.secondaryColor,
           body: ScrollConfiguration(
             behavior: NoGlowScrollBehaviour(),
-            child: CustomScrollView(
-              primary: true,
-              shrinkWrap: true,
-              slivers: [
-                SliverPersistentHeader(
-                    pinned: true,
+            child: RefreshIndicator(
+              onRefresh: () {
+                // setState(() {});
+                return viewModel.swipeRefresh();
+              },
+              child: CustomScrollView(
+                primary: true,
+                shrinkWrap: true,
+                slivers: [
+                  SliverPersistentHeader(
+                      pinned: true,
+                      floating: true,
+                      delegate: SliverAppBarDelegate(
+                          minHeight: 70, maxHeight: 70, child: appBar())),
+                  SliverPersistentHeader(
                     floating: true,
                     delegate: SliverAppBarDelegate(
-                        minHeight: 70, maxHeight: 70, child: appBar())),
-                SliverPersistentHeader(
-                  floating: true,
-                  delegate: SliverAppBarDelegate(
-                      maxHeight: SizeUtils.getHeight(225),
-                      minHeight: 0,
-                      child: slidingOffer()),
-                ),
-                SliverList(
-                    delegate: SliverChildListDelegate([
-                  couponList(),
-                  SizedBox(
-                    height: SizeUtils.getHeight(20),
-                  )
-                ]))
-              ],
+                        maxHeight: SizeUtils.getHeight(225),
+                        minHeight: 0,
+                        child: slidingOffer()),
+                  ),
+                  SliverList(
+                      delegate: SliverChildListDelegate([
+                    couponList(),
+                    SizedBox(
+                      height: SizeUtils.getHeight(20),
+                    )
+                  ]))
+                ],
+              ),
             ),
           )),
     );
@@ -154,35 +160,42 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(
-                          padding: EdgeInsets.only(
-                              left: SizeUtils.getWidth(10),
-                              top: SizeUtils.getHeight(20)),
-                          height: SizeUtils.getHeight(130),
-                          width: SizeUtils.getWidth(155),
-                          decoration: BoxDecoration(
-                            color: AppColors.white,
-                            border: Border(
-                              bottom: BorderSide(
-                                  width: SizeUtils.getWidth(1),
-                                  color: AppColors.borderColor),
-                              top: BorderSide(
-                                  width: SizeUtils.getWidth(1),
-                                  color: AppColors.borderColor),
-                              left: BorderSide(
-                                  width: SizeUtils.getWidth(1),
-                                  color: AppColors.borderColor),
-                              right: BorderSide(
-                                  width: SizeUtils.getWidth(1),
-                                  color: AppColors.borderColor),
+                        InkWell(
+                          onTap: () {
+                            CommonNavigate(parentContext: context)
+                                .navigateWebScreen(
+                                    viewModel.offerBanners[index].url!);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                left: SizeUtils.getWidth(10),
+                                top: SizeUtils.getHeight(20)),
+                            height: SizeUtils.getHeight(130),
+                            width: SizeUtils.getWidth(155),
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              border: Border(
+                                bottom: BorderSide(
+                                    width: SizeUtils.getWidth(1),
+                                    color: AppColors.borderColor),
+                                top: BorderSide(
+                                    width: SizeUtils.getWidth(1),
+                                    color: AppColors.borderColor),
+                                left: BorderSide(
+                                    width: SizeUtils.getWidth(1),
+                                    color: AppColors.borderColor),
+                                right: BorderSide(
+                                    width: SizeUtils.getWidth(1),
+                                    color: AppColors.borderColor),
+                              ),
+                              borderRadius: BorderRadius.only(
+                                  topLeft:
+                                      Radius.circular(SizeUtils.getRadius(8)),
+                                  bottomLeft:
+                                      Radius.circular(SizeUtils.getRadius(8))),
                             ),
-                            borderRadius: BorderRadius.only(
-                                topLeft:
-                                    Radius.circular(SizeUtils.getRadius(8)),
-                                bottomLeft:
-                                    Radius.circular(SizeUtils.getRadius(8))),
+                            child: offerText(index),
                           ),
-                          child: offerText(index),
                         ),
                         Container(
                           clipBehavior: Clip.antiAlias,
@@ -408,7 +421,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       style: TextButton.styleFrom(),
                                       onPressed: () {
                                         CommonNavigate(parentContext: context)
-                                            .navigateWebScreen();
+                                            .navigateWebScreen(
+                                                viewModel.coupens[index].url!);
                                       },
                                       child: Text(
                                         "Grab Now",

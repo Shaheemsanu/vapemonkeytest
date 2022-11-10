@@ -19,14 +19,12 @@ class ForgotPasswordVm extends BaseViewModel {
       loading = true;
       _loaderSink.add(loading);
       PmUserForgotPasswordModel param = PmUserForgotPasswordModel(email: email);
-      //print(param.toJson());
       ApiUserForgotPasswordModel res =
           await ForgotPasswordService().sendForgotPasswordMail(param);
       if (res.status!) {
         String userId = res.customerId.toString();
-        // CommonNavigate(parentContext: parentContext!).navigateResetPassword();
         CommonNavigate(parentContext: parentContext!)
-            .navigateResetPassword(userId);
+            .navigateResetPassword(userId, email);
 
         ShowToast(
                 title: "",

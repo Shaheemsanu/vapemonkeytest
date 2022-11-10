@@ -12,7 +12,8 @@ import '../../utility/values/utils.dart';
 
 class ResetPassword extends StatefulWidget {
   final String? userId;
-  const ResetPassword({Key? key, this.userId}) : super(key: key);
+  final String? email;
+  const ResetPassword({Key? key, this.userId, this.email}) : super(key: key);
 
   @override
   _ResetPasswordState createState() => _ResetPasswordState();
@@ -88,15 +89,26 @@ class _ResetPasswordState extends State<ResetPassword> {
                             horizontal: SizeUtils.getWidth(24)),
                         child: Align(
                           alignment: Alignment.bottomRight,
-                          child: InkWell(
-                            onTap: () {},
-                            child: Text(
-                              "Resend Code",
-                              style: FontUtils.getfont12Style(
-                                  decoration: TextDecoration.underline,
-                                  color: AppColors.lightGrey),
-                            ),
-                          ),
+                          child: StreamBuilder<bool>(
+                              initialData: false,
+                              stream: viewModel.resendCodeLoaderStream,
+                              builder: (context, snapshot) {
+                                if (snapshot.data!) {
+                                  return const CircularProgressIndicator();
+                                } else {
+                                  return InkWell(
+                                    onTap: () {
+                                      viewModel.resendCode(widget.email!);
+                                    },
+                                    child: Text(
+                                      "Resend Code",
+                                      style: FontUtils.getfont12Style(
+                                          decoration: TextDecoration.underline,
+                                          color: AppColors.lightGrey),
+                                    ),
+                                  );
+                                }
+                              }),
                         ),
                       ),
                       SizedBox(

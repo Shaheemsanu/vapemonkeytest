@@ -23,9 +23,8 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-ProfileScreenVM viewModel = ProfileScreenVM();
-
 class _ProfileScreenState extends State<ProfileScreen> {
+  ProfileScreenVM viewModel = ProfileScreenVM();
   final TextEditingController name = TextEditingController();
   final TextEditingController email = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -41,153 +40,172 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    viewModel.setdata();
     viewModel.setContext(context);
     name.text = viewModel.customerName;
     email.text = viewModel.email;
-
     return SafeArea(
       child: Scaffold(
-        body: SizedBox(
-          height: SizeUtils.getScreenHeight(),
-          width: SizeUtils.getScreenWidth(),
-          child: ScrollConfiguration(
-            behavior: NoGlowScrollBehaviour(),
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  appBar(),
-                  SizedBox(
-                    height: SizeUtils.getHeight(30),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: SizeUtils.getWidth(24)),
-                    height: SizeUtils.getHeight(100),
-                    width: SizeUtils.getScreenWidth(),
-                    child: Row(
-                      children: [
-                        Container(
-                          clipBehavior: Clip.antiAlias,
-                          height: SizeUtils.getHeight(90),
-                          width: SizeUtils.getWidth(80),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                  SizeUtils.getRadius(10))),
-                          child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: viewModel.customerProfile,
-                            placeholder: (context, url) => placeholder(),
-                            errorWidget: (context, url, error) => placeholder(),
-                          ),
-                          // const Text('data')
-                        ),
-                        SizedBox(
-                          width: SizeUtils.getWidth(20),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Spacer(),
-                            InkWell(
-                              onTap: () {
-                                ImageSelection.dialogBox(
-                                  context: context,
-                                  onTapCamera: () {
-                                    viewModel.updateProfile(
-                                        imageSelectOPtion: ImageSource.camera);
-                                  },
-                                  onTapGallery: () {
-                                    viewModel.updateProfile(
-                                        imageSelectOPtion: ImageSource.gallery);
-                                  },
-                                );
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.edit,
-                                    size: SizeUtils.getHeight(16),
-                                    color: AppColors.primaryColor,
-                                  ),
-                                  SizedBox(
-                                    width: SizeUtils.getWidth(5),
-                                  ),
-                                  Text(
-                                    "Change Profile Picture",
-                                    style: FontUtils.getfont14Style(
-                                        decoration: TextDecoration.underline,
-                                        color: AppColors.primaryColor,
-                                        fontWeight: FontWeight.w300),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Spacer(),
-                            InkWell(
-                              onTap: () {
-                                ChangePasswordBottomSheet.bottomSheet(
-                                  confirmpasswordController:
-                                      confirmpasswordController,
-                                  passwordController: passwordController,
-                                  context: context,
-                                  onPressed: () {
-                                    viewModel.updateProfile(
-                                        password:
-                                            confirmpasswordController.text);
-                                  },
-                                );
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.lock,
-                                    size: SizeUtils.getHeight(16),
-                                    color: AppColors.primaryColor,
-                                  ),
-                                  SizedBox(
-                                    width: SizeUtils.getWidth(5),
-                                  ),
-                                  Text(
-                                    "Change Password",
-                                    style: FontUtils.getfont14Style(
-                                        decoration: TextDecoration.underline,
-                                        color: AppColors.primaryColor,
-                                        fontWeight: FontWeight.w300),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Spacer()
-                          ],
-                        )
-                      ],
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await viewModel.swipeRefresh();
+            setState(() {});
+          },
+          child: SizedBox(
+            height: SizeUtils.getScreenHeight(),
+            width: SizeUtils.getScreenWidth(),
+            child: ScrollConfiguration(
+              behavior: NoGlowScrollBehaviour(),
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    appBar(),
+                    SizedBox(
+                      height: SizeUtils.getHeight(30),
                     ),
-                  ),
-                  SizedBox(
-                    height: SizeUtils.getHeight(50),
-                  ),
-                  userName(),
-                  SizedBox(
-                    height: SizeUtils.getHeight(10),
-                  ),
-                  eMail(),
-                  SizedBox(
-                    height: SizeUtils.getHeight(60),
-                  ),
-                  FooterButton(
-                      label: "Save",
-                      onPressed: () {
-                        viewModel.updateProfile(name: name.text);
-                        // GetHomeDataService().get();
-                        // setState(() {});
-                      }),
-                  SizedBox(
-                    height: SizeUtils.getHeight(50),
-                  ),
-                  logOutButton(),
-                ],
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: SizeUtils.getWidth(24)),
+                      height: SizeUtils.getHeight(100),
+                      width: SizeUtils.getScreenWidth(),
+                      child: Row(
+                        children: [
+                          Container(
+                            clipBehavior: Clip.antiAlias,
+                            height: SizeUtils.getHeight(90),
+                            width: SizeUtils.getWidth(80),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    SizeUtils.getRadius(10))),
+                            child: CachedNetworkImage(
+                              fit: BoxFit.cover,
+                              imageUrl: viewModel.customerProfile,
+                              placeholder: (context, url) => placeholder(),
+                              errorWidget: (context, url, error) =>
+                                  placeholder(),
+                            ),
+                            // const Text('data')
+                          ),
+                          SizedBox(
+                            width: SizeUtils.getWidth(20),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Spacer(),
+                              InkWell(
+                                onTap: () {
+                                  ImageSelection.dialogBox(
+                                    context: context,
+                                    onTapCamera: () {
+                                      viewModel.updateProfileImage(
+                                          imageSelectOPtion:
+                                              ImageSource.camera);
+                                    },
+                                    onTapGallery: () {
+                                      viewModel.updateProfileImage(
+                                          imageSelectOPtion:
+                                              ImageSource.gallery);
+                                    },
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.edit,
+                                      size: SizeUtils.getHeight(16),
+                                      color: AppColors.primaryColor,
+                                    ),
+                                    SizedBox(
+                                      width: SizeUtils.getWidth(5),
+                                    ),
+                                    Text(
+                                      "Change Profile Picture",
+                                      style: FontUtils.getfont14Style(
+                                          decoration: TextDecoration.underline,
+                                          color: AppColors.primaryColor,
+                                          fontWeight: FontWeight.w300),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Spacer(),
+                              InkWell(
+                                onTap: () {
+                                  ChangePasswordBottomSheet.bottomSheet(
+                                    confirmpasswordController:
+                                        confirmpasswordController,
+                                    passwordController: passwordController,
+                                    context: context,
+                                    onPressed: () {
+                                      viewModel.updateProfilePassword(
+                                          password:
+                                              confirmpasswordController.text);
+                                    },
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.lock,
+                                      size: SizeUtils.getHeight(16),
+                                      color: AppColors.primaryColor,
+                                    ),
+                                    SizedBox(
+                                      width: SizeUtils.getWidth(5),
+                                    ),
+                                    Text(
+                                      "Change Password",
+                                      style: FontUtils.getfont14Style(
+                                          decoration: TextDecoration.underline,
+                                          color: AppColors.primaryColor,
+                                          fontWeight: FontWeight.w300),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Spacer()
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: SizeUtils.getHeight(50),
+                    ),
+                    userName(),
+                    SizedBox(
+                      height: SizeUtils.getHeight(10),
+                    ),
+                    eMail(),
+                    SizedBox(
+                      height: SizeUtils.getHeight(60),
+                    ),
+                    StreamBuilder<bool>(
+                        initialData: false,
+                        stream: viewModel.loaderStream,
+                        builder: (context, snapshot) {
+                          if (snapshot.data!) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            return FooterButton(
+                                label: "Save",
+                                onPressed: () {
+                                  viewModel.updateProfileName(name: name.text);
+                                  // setState(() {});
+                                });
+                          }
+                        }),
+                    SizedBox(
+                      height: SizeUtils.getHeight(50),
+                    ),
+                    logOutButton(),
+                  ],
+                ),
               ),
             ),
           ),
